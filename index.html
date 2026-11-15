@@ -27,6 +27,9 @@
     // linked folders (folders.js): the wasm module calls these; permission comes back on the first click
     globalThis.ppcraftFolders = folders;
     addEventListener("pointerdown", () => folders.reconnect(), { once: true });
+    // a drag inside the page (a slider, selected text, the canvas) must not start the browser's own drag and drop:
+    // it would show as files hovering over the app. Files dragged in from the desktop don't fire dragstart here.
+    addEventListener("dragstart", (e) => e.preventDefault());
     (async () => {
       // The Chinese font is a separate file: embedding it would exceed the host's WASM size limit.
       // Font-free development builds can still run, with the same missing-glyph warning as before.
