@@ -16,6 +16,48 @@
     }
     #lightcraft_status { position: absolute; left: 0; bottom: 0; width: 1px; height: 1px; overflow: hidden; }
   </style>
+  <!-- Google Analytics (GA4), added to the public site by .github/workflows/site.yml when the repository variable
+       GA_MEASUREMENT_ID is set. Page views, plus errors as `exception` events: uncaught errors, rejected promises and
+       console.error (the wasm module's panics and failures). Error text has file names and paths taken out, and at
+       most 20 errors are sent per visit. No photo data is sent: photos stay in the browser. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V6GZTV74K4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "G-V6GZTV74K4", { app_version: "v0.1.5" });
+    (() => {
+      let sent = 0;
+      const seen = new Set();
+      const scrub = (s) =>
+        String(s)
+          .replace(/(?<![\w.])(?:[A-Za-z]:\\|\/)[^\s"'<>]*/g, "<path>")
+          .replace(/[^\s"'<>\\/]+\.(?:x3f|x3i|jpe?g|tiff?|png|dng|heic|avif|webp|cr[23w]|nef|arw|raf|orf|rw2|pef|srw)\b/gi, "<file>")
+          .replace(/\s+/g, " ")
+          .slice(0, 300);
+      const report = (kind, text, fatal) => {
+        const d = scrub(`${kind}: ${text}`);
+        if (sent >= 20 || seen.has(d)) return;
+        seen.add(d);
+        sent++;
+        gtag("event", "exception", { description: d, fatal: !!fatal, error_kind: kind, app_version: "v0.1.5" });
+      };
+      addEventListener("error", (e) => {
+        if (e && e.message) report("error", `${e.message} @${String(e.filename || "").split("/").pop()}:${e.lineno || 0}`, true);
+      });
+      addEventListener("unhandledrejection", (e) => {
+        const r = e && e.reason;
+        report("rejection", r && r.message ? r.message : r, false);
+      });
+      const original = console.error.bind(console);
+      console.error = (...args) => {
+        try {
+          report("console", args.map((a) => (a && a.message ? a.message : typeof a === "string" ? a : JSON.stringify(a))).join(" "), /panicked/.test(String(args[0])));
+        } catch (_) {}
+        original(...args);
+      };
+    })();
+  </script>
 </head>
 <body>
   <canvas id="lightcraft_canvas"></canvas>
