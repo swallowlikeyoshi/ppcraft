@@ -37,6 +37,9 @@ PPcraft is built on [LightCraft](https://github.com/storytold/lightcraft) (MIT O
 [LICENSE.md](LICENSE.md). The X3F container format follows Kalpanika's
 [x3f_tools](https://github.com/Kalpanika/x3f) (BSD licence).
 
+The sample photo (`sample/SDIM0076.X3F`, Help ▸ Try a Sample Photo) is a Sigma DP2 Merrill file from
+[raw.pixls.us](https://raw.pixls.us/), released into the public domain (CC0) by its uploader.
+
 ## Publishing (maintainers)
 
 This repository holds only the built site. It is published from the source repository's `site` workflow when a
