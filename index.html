@@ -25,7 +25,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag("js", new Date());
-    gtag("config", "G-V6GZTV74K4", { app_version: "v0.1.5" });
+    gtag("config", "G-V6GZTV74K4", { app_version: "v0.1.6" });
     (() => {
       let sent = 0;
       const seen = new Set();
@@ -40,7 +40,7 @@
         if (sent >= 20 || seen.has(d)) return;
         seen.add(d);
         sent++;
-        gtag("event", "exception", { description: d, fatal: !!fatal, error_kind: kind, app_version: "v0.1.5" });
+        gtag("event", "exception", { description: d, fatal: !!fatal, error_kind: kind, app_version: "v0.1.6" });
       };
       addEventListener("error", (e) => {
         if (e && e.message) report("error", `${e.message} @${String(e.filename || "").split("/").pop()}:${e.lineno || 0}`, true);
